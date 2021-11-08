@@ -14,6 +14,8 @@ const dbOptions = { useUnifiedTopology: true, useNewUrlParser: true};
 mongoose.connect(mongoDB, dbOptions);
 mongoose.Promise = global.Promise;
 
+require('./models/user')
+require('./models/article')
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 

@@ -16,6 +16,7 @@
     "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "prettier": "^2.4.1"
   }
 }
