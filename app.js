@@ -5,12 +5,13 @@ const logger = require('morgan');
 const api = require('./routes');
 const app = express();
 
+global.util = require('./config/util');
 
 const mongoose = require('mongoose');
 const dev_db_url = 'mongodb://localhost/tc-mongo-homework';
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
-
-mongoose.connect(mongoDB);
+const dbOptions = { useUnifiedTopology: true, useNewUrlParser: true};
+mongoose.connect(mongoDB, dbOptions);
 mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
