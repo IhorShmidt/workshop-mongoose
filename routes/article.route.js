@@ -6,6 +6,6 @@ const articleController = require('../controllers/article');
 router.post('/', articleController.createArticle);
 router
     .put('/:articleId', articleController.updateArticle)
-
+    .delete('/articleId', articleController.deleteArticle)
 
 module.exports = router;

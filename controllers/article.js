@@ -6,7 +6,8 @@ const Article = require('../models/article')
 
 module.exports = {
     createArticle,
-    updateArticle
+    updateArticle,
+    deleteArticle
 };
 
 async function createArticle(req, res, next) {
@@ -60,4 +61,19 @@ async function updateArticle(req, res, next) {
         next(err);
     }
 }
+
+
+async function deleteArticle(req, res, next) {
+
+    const articleId = req.params.articleId;
+
+    try {
+        const result = await Article.findByIdAndDelete(articleId)
+        return res.status(200).json(result);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
+}
+
 
