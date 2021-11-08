@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
+mongoose.set('debug', true)
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
