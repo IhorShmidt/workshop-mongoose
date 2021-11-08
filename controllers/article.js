@@ -5,7 +5,8 @@ const utilError = require("../config/errorHelper");
 const Article = require('../models/article')
 
 module.exports = {
-    createArticle
+    createArticle,
+    updateArticle
 };
 
 async function createArticle(req, res, next) {
@@ -32,5 +33,31 @@ async function createArticle(req, res, next) {
         next(err);
     }
 
+}
+
+
+async function updateArticle(req, res, next) {
+    const articleId = req.params.articleId;
+    const body = req.body;
+
+    try {
+        const existingArticle = await Article.findOne({_id: articleId})
+        if (!existingArticle) {
+            throw utilError.badRequest('Article not exists');
+        }
+
+        if (body.title) {
+            existingArticle.title = body.title;
+        }
+        if (body.description) {
+            existingArticle.description = body.description;
+        }
+
+        await existingArticle.save();
+        return res.status(200).json(existingArticle);
+    } catch (err) {
+        console.log(err);
+        next(err);
+    }
 }
 

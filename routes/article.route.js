@@ -4,7 +4,8 @@ const router = express.Router();
 const articleController = require('../controllers/article');
 
 router.post('/', articleController.createArticle);
-
+router
+    .put('/:articleId', articleController.updateArticle)
 
 
 module.exports = router;
