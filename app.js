@@ -21,6 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/api', api);
 
+require('./config/error-handler')(app)
+
 const port = 4040;
 
 app.listen(port, () => {
