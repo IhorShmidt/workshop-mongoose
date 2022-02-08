@@ -3,6 +3,9 @@
 const _ = require('lodash');
 const utilError = require('../config/errorHelper');
 const Article = require('../models/article');
+const {validateArticleCreation} = require("../validators/article.validator");
+const articleService = require("../services/article.service");
+
 
 module.exports = {
   createArticle,
@@ -17,15 +20,15 @@ async function createArticle(req, res, next) {
   const newArticle = _.pick(body, fields);
 
   try {
-    const existingArticle = await Article.findOne({title: body.title});
-    if (existingArticle) {
-      throw utilError.badRequest('Article exists');
-    }
-    const book = new Article(newArticle);
-    await book.save();
-    return res.status(200).json(book);
+      const data = await validateArticleCreation(newArticle);
+      const result = await articleService.createArticle(data);
+      console.log('---------------');
+      console.log('data', data);
+      console.log('---------------');
+
+    return res.status(200).json(result);
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     next(err);
   }
 }
@@ -35,6 +38,8 @@ async function updateArticle(req, res, next) {
   const body = req.body;
 
   try {
+
+
     const existingArticle = await Article.findOne({_id: articleId});
     if (!existingArticle) {
       throw utilError.badRequest('Article not exists');
@@ -62,7 +67,9 @@ async function getArticles(req, res, next) {
     } = req;
     const sort = util.sort(sortFromClient);
     const filter = {$regex: new RegExp(util.escapeRegExpChars(search), 'i')};
+
     const query = {$or: [{title: filter}, {description: filter}]};
+
     const result = await Article.find(query)
         .populate('owner')
         .sort(sort)
